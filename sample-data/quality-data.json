@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "datasetId": "quality-metrics-q4",
+    "reportingPeriod": "2024-Q4",
+    "generatedAt": "2024-12-15T08:00:00Z",
+    "provider": "AutoMotors OEM",
+    "confidentiality": "restricted"
+  },
+  "qualityMetrics": {
+    "overallPPM": 45,
+    "targetPPM": 50,
+    "status": "ON_TARGET",
+    "supplierPerformance": [
+      {
+        "supplierId": "SUP-001",
+        "supplierName": "TierOne Electronics GmbH",
+        "rating": "A",
+        "metrics": {
+          "defectRate": 12,
+          "deliveryOnTime": 98.5,
+          "responseTime": 4.2,
+          "certifications": ["IATF16949", "ISO14001", "TISAX"]
+        },
+        "parts": [
+          {
+            "partNumber": "PWR-2024-0001",
+            "inspected": 15000,
+            "defects": 3,
+            "ppm": 0.2
+          },
+          {
+            "partNumber": "BAT-2024-0003",
+            "inspected": 12000,
+            "defects": 2,
+            "ppm": 0.17
+          }
+        ],
+        "trend": "IMPROVING"
+      },
+      {
+        "supplierId": "SUP-002",
+        "supplierName": "BatteryCell Corp",
+        "rating": "A",
+        "metrics": {
+          "defectRate": 8,
+          "deliveryOnTime": 99.2,
+          "responseTime": 3.8,
+          "certifications": ["IATF16949", "ISO14001", "ISO27001"]
+        },
+        "parts": [
+          {
+            "partNumber": "BAT-2024-0001",
+            "inspected": 8000,
+            "defects": 1,
+            "ppm": 0.13
+          },
+          {
+            "partNumber": "BAT-2024-0002",
+            "inspected": 6500,
+            "defects": 1,
+            "ppm": 0.15
+          }
+        ],
+        "trend": "STABLE"
+      },
+      {
+        "supplierId": "SUP-003",
+        "supplierName": "DriveSystem Parts Ltd",
+        "rating": "B",
+        "metrics": {
+          "defectRate": 35,
+          "deliveryOnTime": 94.5,
+          "responseTime": 6.1,
+          "certifications": ["IATF16949"]
+        },
+        "parts": [
+          {
+            "partNumber": "PWR-2024-0003",
+            "inspected": 10000,
+            "defects": 12,
+            "ppm": 1.2
+          }
+        ],
+        "trend": "NEEDS_IMPROVEMENT",
+        "corrective_actions": [
+          {
+            "id": "CA-2024-0042",
+            "issue": "Gear noise above specification",
+            "status": "IN_PROGRESS",
+            "dueDate": "2025-01-15"
+          }
+        ]
+      },
+      {
+        "supplierId": "SUP-004",
+        "supplierName": "SuspensionTech Inc",
+        "rating": "A",
+        "metrics": {
+          "defectRate": 15,
+          "deliveryOnTime": 97.8,
+          "responseTime": 4.5,
+          "certifications": ["IATF16949", "ISO14001"]
+        },
+        "parts": [
+          {
+            "partNumber": "CHS-2024-0001",
+            "inspected": 9000,
+            "defects": 2,
+            "ppm": 0.22
+          },
+          {
+            "partNumber": "CHS-2024-0002",
+            "inspected": 11000,
+            "defects": 3,
+            "ppm": 0.27
+          }
+        ],
+        "trend": "STABLE"
+      }
+    ]
+  },
+  "issuesSummary": {
+    "openIssues": 3,
+    "resolvedThisQuarter": 12,
+    "avgResolutionDays": 14.5
+  }
+}

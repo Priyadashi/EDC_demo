@@ -1,0 +1,63 @@
+# Docker Compose for Local Development
+# Use this to run all services locally for testing
+
+version: '3.8'
+
+services:
+  provider:
+    build:
+      context: .
+      dockerfile: provider-connector/Dockerfile.local
+    container_name: edc-provider
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./shared:/app/shared:ro
+      - ./sample-data:/app/sample-data:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  consumer:
+    build:
+      context: .
+      dockerfile: consumer-connector/Dockerfile.local
+    container_name: edc-consumer
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+      - PROVIDER_URL=http://provider:8080
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./shared:/app/shared:ro
+    depends_on:
+      - provider
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  demo-ui:
+    build:
+      context: ./demo-ui
+      dockerfile: Dockerfile.local
+    container_name: edc-demo-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_PROVIDER_URL=http://localhost:8080
+      - VITE_CONSUMER_URL=http://localhost:8081
+    depends_on:
+      - provider
+      - consumer
+
+networks:
+  default:
+    name: edc-demo-network
