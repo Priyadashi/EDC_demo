@@ -1,0 +1,149 @@
+# Cloud Build configuration for Google Cloud Run deployment
+# This builds and deploys all three services
+
+substitutions:
+  _REGION: us-central1
+
+steps:
+  # Build Provider Connector
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/edc-provider:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/edc-provider:latest'
+      - '-f'
+      - 'deploy/Dockerfile.provider'
+      - '.'
+
+  # Build Consumer Connector
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/edc-consumer:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/edc-consumer:latest'
+      - '-f'
+      - 'deploy/Dockerfile.consumer'
+      - '.'
+
+  # Build Demo UI
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/edc-demo-ui:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/edc-demo-ui:latest'
+      - '-f'
+      - 'demo-ui/Dockerfile'
+      - 'demo-ui'
+
+  # Push all images
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/edc-provider:$COMMIT_SHA']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/edc-provider:latest']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/edc-consumer:$COMMIT_SHA']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/edc-consumer:latest']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/edc-demo-ui:$COMMIT_SHA']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/edc-demo-ui:latest']
+
+  # Deploy Provider to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'edc-provider'
+      - '--image=gcr.io/$PROJECT_ID/edc-provider:$COMMIT_SHA'
+      - '--region=${_REGION}'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--memory=256Mi'
+      - '--cpu=1'
+      - '--min-instances=0'
+      - '--max-instances=2'
+      - '--timeout=60s'
+
+  # Get Provider URL and deploy Consumer
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        PROVIDER_URL=$(gcloud run services describe edc-provider --region=${_REGION} --format='value(status.url)')
+        echo "Provider URL: $PROVIDER_URL"
+        gcloud run deploy edc-consumer \
+          --image=gcr.io/$PROJECT_ID/edc-consumer:$COMMIT_SHA \
+          --region=${_REGION} \
+          --platform=managed \
+          --allow-unauthenticated \
+          --memory=256Mi \
+          --cpu=1 \
+          --min-instances=0 \
+          --max-instances=2 \
+          --timeout=60s \
+          --set-env-vars="PROVIDER_URL=$PROVIDER_URL"
+
+  # Get both URLs and deploy UI
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        PROVIDER_URL=$(gcloud run services describe edc-provider --region=${_REGION} --format='value(status.url)')
+        CONSUMER_URL=$(gcloud run services describe edc-consumer --region=${_REGION} --format='value(status.url)')
+        echo "Provider URL: $PROVIDER_URL"
+        echo "Consumer URL: $CONSUMER_URL"
+        gcloud run deploy edc-demo-ui \
+          --image=gcr.io/$PROJECT_ID/edc-demo-ui:$COMMIT_SHA \
+          --region=${_REGION} \
+          --platform=managed \
+          --allow-unauthenticated \
+          --memory=256Mi \
+          --cpu=1 \
+          --min-instances=0 \
+          --max-instances=2 \
+          --timeout=60s \
+          --set-env-vars="VITE_PROVIDER_URL=$PROVIDER_URL,VITE_CONSUMER_URL=$CONSUMER_URL"
+
+  # Print final URLs
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo "=========================================="
+        echo "Deployment Complete!"
+        echo "=========================================="
+        echo ""
+        echo "Demo UI:"
+        gcloud run services describe edc-demo-ui --region=${_REGION} --format='value(status.url)'
+        echo ""
+        echo "Provider API:"
+        gcloud run services describe edc-provider --region=${_REGION} --format='value(status.url)'
+        echo ""
+        echo "Consumer API:"
+        gcloud run services describe edc-consumer --region=${_REGION} --format='value(status.url)'
+
+images:
+  - 'gcr.io/$PROJECT_ID/edc-provider:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/edc-provider:latest'
+  - 'gcr.io/$PROJECT_ID/edc-consumer:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/edc-consumer:latest'
+  - 'gcr.io/$PROJECT_ID/edc-demo-ui:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/edc-demo-ui:latest'
+
+timeout: '1800s'

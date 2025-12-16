@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "datasetId": "part-catalog-2024",
+    "version": "2.1.0",
+    "generatedAt": "2024-12-01T10:00:00Z",
+    "provider": "AutoMotors OEM",
+    "confidentiality": "internal"
+  },
+  "catalog": {
+    "modelYear": 2024,
+    "vehicleModels": ["EV-Sport", "EV-Sedan", "EV-SUV"],
+    "totalParts": 15420,
+    "categories": [
+      {
+        "id": "CAT-001",
+        "name": "Powertrain Components",
+        "partCount": 2340,
+        "parts": [
+          {
+            "partNumber": "PWR-2024-0001",
+            "name": "Electric Motor Assembly - Front",
+            "description": "High-efficiency permanent magnet motor for front axle",
+            "specifications": {
+              "power": "150 kW",
+              "torque": "310 Nm",
+              "efficiency": "97%",
+              "weight": "45 kg"
+            },
+            "suppliers": ["TierOne Electronics GmbH"],
+            "applicableModels": ["EV-Sport", "EV-Sedan"]
+          },
+          {
+            "partNumber": "PWR-2024-0002",
+            "name": "Electric Motor Assembly - Rear",
+            "description": "High-performance motor for rear axle with integrated inverter",
+            "specifications": {
+              "power": "200 kW",
+              "torque": "420 Nm",
+              "efficiency": "96.5%",
+              "weight": "52 kg"
+            },
+            "suppliers": ["TierOne Electronics GmbH"],
+            "applicableModels": ["EV-Sport", "EV-SUV"]
+          },
+          {
+            "partNumber": "PWR-2024-0003",
+            "name": "Reduction Gearbox",
+            "description": "Single-speed reduction gear for EV drivetrain",
+            "specifications": {
+              "ratio": "9.73:1",
+              "maxTorque": "500 Nm",
+              "weight": "12 kg"
+            },
+            "suppliers": ["DriveSystem Parts Ltd"],
+            "applicableModels": ["EV-Sport", "EV-Sedan", "EV-SUV"]
+          }
+        ]
+      },
+      {
+        "id": "CAT-002",
+        "name": "Battery System",
+        "partCount": 1580,
+        "parts": [
+          {
+            "partNumber": "BAT-2024-0001",
+            "name": "Battery Pack - Standard Range",
+            "description": "60 kWh lithium-ion battery pack",
+            "specifications": {
+              "capacity": "60 kWh",
+              "voltage": "400V",
+              "chemistry": "NMC 811",
+              "weight": "380 kg"
+            },
+            "suppliers": ["BatteryCell Corp"],
+            "applicableModels": ["EV-Sedan"]
+          },
+          {
+            "partNumber": "BAT-2024-0002",
+            "name": "Battery Pack - Long Range",
+            "description": "85 kWh lithium-ion battery pack",
+            "specifications": {
+              "capacity": "85 kWh",
+              "voltage": "400V",
+              "chemistry": "NMC 811",
+              "weight": "520 kg"
+            },
+            "suppliers": ["BatteryCell Corp"],
+            "applicableModels": ["EV-Sport", "EV-SUV"]
+          },
+          {
+            "partNumber": "BAT-2024-0003",
+            "name": "Battery Management System",
+            "description": "Advanced BMS with thermal management",
+            "specifications": {
+              "cellMonitoring": "96 cells",
+              "balancing": "active",
+              "thermalSensors": 24
+            },
+            "suppliers": ["TierOne Electronics GmbH"],
+            "applicableModels": ["EV-Sport", "EV-Sedan", "EV-SUV"]
+          }
+        ]
+      },
+      {
+        "id": "CAT-003",
+        "name": "Chassis & Suspension",
+        "partCount": 3200,
+        "parts": [
+          {
+            "partNumber": "CHS-2024-0001",
+            "name": "Front Suspension Assembly",
+            "description": "MacPherson strut front suspension",
+            "specifications": {
+              "type": "MacPherson strut",
+              "springRate": "35 N/mm",
+              "travel": "180 mm"
+            },
+            "suppliers": ["SuspensionTech Inc"],
+            "applicableModels": ["EV-Sport", "EV-Sedan"]
+          },
+          {
+            "partNumber": "CHS-2024-0002",
+            "name": "Rear Suspension Assembly",
+            "description": "Multi-link rear suspension",
+            "specifications": {
+              "type": "Multi-link",
+              "springRate": "40 N/mm",
+              "travel": "200 mm"
+            },
+            "suppliers": ["SuspensionTech Inc"],
+            "applicableModels": ["EV-Sport", "EV-Sedan", "EV-SUV"]
+          }
+        ]
+      }
+    ]
+  }
+}

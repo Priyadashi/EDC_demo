@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background-color: #f7fafc;
+}
+
+.connector-card {
+  @apply bg-white rounded-lg shadow-md p-4 border-l-4;
+}
+
+.connector-card.provider {
+  @apply border-l-blue-600;
+}
+
+.connector-card.consumer {
+  @apply border-l-green-600;
+}
+
+.step-indicator {
+  @apply flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-sm;
+}
+
+.step-indicator.completed {
+  @apply bg-green-500;
+}
+
+.step-indicator.active {
+  @apply bg-blue-500 animate-pulse;
+}
+
+.step-indicator.pending {
+  @apply bg-gray-300 text-gray-600;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors;
+}
+
+.data-flow-arrow {
+  animation: flow 2s ease-in-out infinite;
+}
+
+@keyframes flow {
+  0%, 100% { opacity: 0.3; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(10px); }
+}
+
+.json-viewer {
+  @apply bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-auto max-h-96;
+}

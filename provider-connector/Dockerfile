@@ -1,0 +1,30 @@
+# Provider Connector Dockerfile
+# Optimized for Google Cloud Run
+
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies first (better caching)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy shared module
+COPY ../shared /app/shared
+
+# Copy application code
+COPY . .
+
+# Copy sample data
+COPY ../sample-data /app/sample-data
+
+# Set environment variables
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+
+# Expose port
+EXPOSE 8080
+
+# Run with uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
