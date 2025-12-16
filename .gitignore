@@ -47,7 +47,10 @@ Thumbs.db
 .env
 .env.local
 .env.production
+
+# Ignore local environment files but not Dockerfile.local
 *.local
+!Dockerfile.local
 
 # Logs
 logs/

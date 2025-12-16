@@ -1,0 +1,25 @@
+# Consumer Connector Dockerfile for Local Development
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies
+COPY consumer-connector/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy shared module
+COPY shared /app/shared
+
+# Copy application
+COPY consumer-connector/*.py /app/
+
+# Set environment
+ENV PORT=8081
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8081
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8081", "--reload"]
